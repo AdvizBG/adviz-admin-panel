@@ -7,3 +7,17 @@ api.interceptors.request.use((config) => {
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error?.response?.status === 401) {
+      localStorage.removeItem("access_token");
+      const basename = import.meta.env.VITE_BASENAME || "";
+      if (!window.location.pathname.startsWith(basename + "/auth/")) {
+        window.location.href = basename + "/auth/sign-in";
+      }
+    }
+    return Promise.reject(error);
+  },
+);
