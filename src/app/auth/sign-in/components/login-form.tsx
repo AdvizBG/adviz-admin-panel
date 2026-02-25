@@ -19,11 +19,13 @@ export function LoginForm({
   const [error, setError] = useState<string>("");
 
   const loginSchema = z.object({
-    username: z.email("Must be a valid email").min(1, "Username is required"),
+    username: z
+      .email("Моля, въведете валиден имейл")
+      .min(1, "Потребителското име е задължително"),
     password: z
       .string()
-      .min(1, "Password is required")
-      .min(6, "Password must be at least 6 characters"),
+      .min(1, "Паролата е задължителна")
+      .min(6, "Паролата трябва да е поне 6 символа"),
   });
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -49,7 +51,7 @@ export function LoginForm({
       await login.mutateAsync(formData);
       navigate("/dashboard");
     } catch (err) {
-      setError("Invalid credentials. Please try again.");
+      setError("Невалидни данни. Моля, опитайте отново.");
     }
   };
 
@@ -60,9 +62,9 @@ export function LoginForm({
           <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold">Welcome back</h1>
+                <h1 className="text-2xl font-bold">Добре дошли</h1>
                 <p className="text-muted-foreground text-balance">
-                  Login to your Ploshtadka.BG admin account
+                  Влезте в административния акаунт на Ploshtadka.BG
                 </p>
               </div>
               {error && (
@@ -71,7 +73,7 @@ export function LoginForm({
                 </div>
               )}
               <div className="grid gap-3">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username">Потребителско име</Label>
                 <Input
                   id="username"
                   name="username"
@@ -83,12 +85,12 @@ export function LoginForm({
               </div>
               <div className="grid gap-3">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">Парола</Label>
                   <a
                     href="/auth/forgot-password"
                     className="ml-auto text-sm underline-offset-2 hover:underline"
                   >
-                    Forgot your password?
+                    Забравена парола?
                   </a>
                 </div>
                 <Input
@@ -104,11 +106,11 @@ export function LoginForm({
                 className="w-full cursor-pointer"
                 disabled={login.isPending}
               >
-                {login.isPending ? "Logging in..." : "Login"}
+                {login.isPending ? "Влизане..." : "Вход"}
               </Button>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
-                  Or continue with
+                  Или продължете с
                 </span>
               </div>
               <div className="grid grid-cols-1 gap-4">
@@ -136,7 +138,7 @@ export function LoginForm({
                       fill="currentColor"
                     />
                   </svg>
-                  <span className="sr-only">Login with Google</span>
+                  <span className="sr-only">Вход с Google</span>
                 </Button>
                 {/* <Button */}
                 {/*   variant="outline" */}
@@ -164,8 +166,9 @@ export function LoginForm({
         </CardContent>
       </Card>
       <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        С натискането на продължи, вие се съгласявате с нашите{" "}
+        <a href="#">Условия за ползване</a> и{" "}
+        <a href="#">Политика за поверителност</a>.
       </div>
     </div>
   );

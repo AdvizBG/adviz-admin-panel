@@ -13,14 +13,14 @@ export function ForgotPasswordForm({
         <CardContent className="grid p-0 md:grid-cols-2">
           <form className="p-6 md:p-8">
             <div className="flex flex-col gap-6">
-              <p>Contact us at admin@ploshtadka.bg</p>
+              <p>Свържете се с нас на admin@ploshtadka.bg</p>
               <div className="text-center text-sm">
-                Remember your password?{" "}
+                Спомняте ли си паролата?{" "}
                 <a
                   href="/auth/sign-in"
                   className="underline underline-offset-4"
                 >
-                  Back to sign in
+                  Обратно към вход
                 </a>
               </div>
             </div>
