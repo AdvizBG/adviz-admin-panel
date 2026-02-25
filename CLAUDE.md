@@ -32,6 +32,7 @@ src/
     dashboard/          # metrics, tables (active)
     users/              # user management (active)
     venues/             # venue management (active)
+    bookings/           # booking management (active)
     settings/           # account, notifications (active)
     errors/             # 401/403/404/500/maintenance pages
     calendar/           # (inactive, commented out)
@@ -83,6 +84,7 @@ Auth hooks live in `src/app/auth/api/hooks.ts`. The pattern for other domains:
 1. Create `src/app/<feature>/page.tsx`
 2. Add a lazy import + route entry in `src/config/routes.tsx`
 3. Add API hooks in `src/app/<feature>/api/hooks.ts` using the axios instance from `src/lib/api.ts`
+4. Add a nav item in `src/components/app-sidebar.tsx`
 
 ## Environment variables
 

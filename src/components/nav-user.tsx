@@ -93,13 +93,13 @@ export function NavUser() {
               <DropdownMenuItem asChild className="cursor-pointer">
                 <Link to="/settings/account">
                   <CircleUser />
-                  Account
+                  Профил
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="cursor-pointer">
                 <Link to="/settings/notifications">
                   <BellDot />
-                  Notifications
+                  Нотификации
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -109,7 +109,7 @@ export function NavUser() {
               onSelect={handleLogout}
             >
               <LogOut />
-              Log out
+              Излез
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

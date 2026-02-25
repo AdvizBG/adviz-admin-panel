@@ -42,10 +42,10 @@ const data = {
   },
   navGroups: [
     {
-      label: "Dashboards",
+      label: "Табла",
       items: [
         {
-          title: "Dashboard 1",
+          title: "Табло",
           url: "/dashboard",
           icon: LayoutDashboard,
         },
@@ -57,7 +57,7 @@ const data = {
       ],
     },
     {
-      label: "Apps",
+      label: "Приложения",
       items: [
         // {
         //   title: "Mail",
@@ -80,73 +80,73 @@ const data = {
         //   icon: Calendar,
         // },
         {
-          title: "Users",
+          title: "Потребители",
           url: "/users",
           icon: Users,
         },
         {
-          title: "Venues",
+          title: "Обекти",
           url: "/venues",
           icon: RectangleCircle,
         },
         {
-          title: "Bookings",
+          title: "Резервации",
           url: "/bookings",
           icon: CalendarCheck,
         },
       ],
     },
     {
-      label: "Pages",
+      label: "Страници",
       items: [
         {
-          title: "Landing",
+          title: "Начална страница",
           url: "/landing",
           target: "_blank",
           icon: LayoutTemplate,
         },
         {
-          title: "Auth Pages",
+          title: "Автентикация",
           url: "#",
           icon: Shield,
           items: [
             {
-              title: "Sign In",
+              title: "Вход",
               url: "/auth/sign-in",
             },
             {
-              title: "Sign Up",
+              title: "Регистрация",
               url: "/auth/sign-up",
             },
             {
-              title: "Forgot Password",
+              title: "Забравена парола",
               url: "/auth/forgot-password",
             },
           ],
         },
         {
-          title: "Errors",
+          title: "Грешки",
           url: "#",
           icon: AlertTriangle,
           items: [
             {
-              title: "Unauthorized",
+              title: "Неоторизиран",
               url: "/errors/unauthorized",
             },
             {
-              title: "Forbidden",
+              title: "Забранен достъп",
               url: "/errors/forbidden",
             },
             {
-              title: "Not Found",
+              title: "Не е намерено",
               url: "/errors/not-found",
             },
             {
-              title: "Internal Server Error",
+              title: "Вътрешна сървърна грешка",
               url: "/errors/internal-server-error",
             },
             {
-              title: "Under Maintenance",
+              title: "В поддръжка",
               url: "/errors/under-maintenance",
             },
           ],
@@ -210,7 +210,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">Ploshtadka.BG</span>
-                  <span className="truncate text-xs">Admin Dashboard</span>
+                  <span className="truncate text-xs">
+                    Административен панел
+                  </span>
                 </div>
               </Link>
             </SidebarMenuButton>
