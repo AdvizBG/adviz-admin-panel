@@ -79,6 +79,22 @@ Auth hooks live in `src/app/auth/api/hooks.ts`. The pattern for other domains:
 2. `GET /users/@me/get` with `staleTime: Infinity` to hydrate current user on load
 3. Logout: removes token from localStorage + clears QueryClient cache
 
+### Role-based access
+
+Two roles access the admin panel: **admins** (full access) and **venue owners** (restricted).
+
+| Page | Admin | Venue Owner |
+|---|---|---|
+| Dashboard | ✓ | ✓ |
+| Users | ✓ | hidden |
+| Venues | ✓ (all) | ✓ (own only) |
+| Bookings | ✓ (all) | ✓ (own only) |
+| Settings | ✓ | ✓ |
+
+Role detection uses `src/lib/scopes.ts` — helpers that inspect the current user's `scopes` array (loaded from `GET /users/@me/get`). The sidebar conditionally hides the Users nav item for venue owners.
+
+Venue owners cannot change venue status (button hidden). Admins can escalate any user to venue owner via the Users page scope management UI.
+
 ## Adding a new page
 
 1. Create `src/app/<feature>/page.tsx`
