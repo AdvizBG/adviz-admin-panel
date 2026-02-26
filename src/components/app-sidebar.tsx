@@ -24,6 +24,8 @@ import { SidebarNotification } from "@/components/sidebar-notification";
 
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
+import { useMe } from "@/app/auth/api/hooks";
+import { isAdmin } from "@/lib/scopes";
 import {
   Sidebar,
   SidebarContent,
@@ -59,30 +61,11 @@ const data = {
     {
       label: "Приложения",
       items: [
-        // {
-        //   title: "Mail",
-        //   url: "/mail",
-        //   icon: Mail,
-        // },
-        // {
-        //   title: "Tasks",
-        //   url: "/tasks",
-        //   icon: CheckSquare,
-        // },
-        // {
-        //   title: "Chat",
-        //   url: "/chat",
-        //   icon: MessageCircle,
-        // },
-        // {
-        //   title: "Calendar",
-        //   url: "/calendar",
-        //   icon: Calendar,
-        // },
         {
           title: "Потребители",
           url: "/users",
           icon: Users,
+          adminOnly: true,
         },
         {
           title: "Обекти",
@@ -198,6 +181,9 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: me } = useMe();
+  const admin = me ? isAdmin(me.scopes) : false;
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -220,9 +206,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {data.navGroups.map((group) => (
-          <NavMain key={group.label} label={group.label} items={group.items} />
-        ))}
+        {data.navGroups.map((group) => {
+          const items = admin
+            ? group.items
+            : group.items.filter((item) => !item.adminOnly);
+          return (
+            <NavMain key={group.label} label={group.label} items={items} />
+          );
+        })}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

@@ -20,15 +20,15 @@ const VENUES_KEY = ["venues"];
 
 // ─── Venue Queries & Mutations ────────────────────────────────────────────────
 
-export function useVenues() {
+export function useVenues(params?: { owner_id?: string }) {
   return useQuery({
-    queryKey: VENUES_KEY,
-    queryFn: fetchVenues,
+    queryKey: [...VENUES_KEY, params],
+    queryFn: () => fetchVenues(params),
   });
 }
 
-const fetchVenues = () =>
-  api.get<VenueListItem[]>("/venues/").then((r) => r.data);
+const fetchVenues = (params?: { owner_id?: string }) =>
+  api.get<VenueListItem[]>("/venues/", { params }).then((r) => r.data);
 
 export function useVenue(id: string | null) {
   return useQuery({

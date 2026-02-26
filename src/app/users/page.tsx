@@ -1,12 +1,20 @@
 "use client";
 
+import { Navigate } from "react-router-dom";
 import { BaseLayout } from "@/components/layouts/base-layout";
 import { StatCards } from "./components/stat-cards";
 import { DataTable } from "./components/data-table";
 import { useAddUser, useDeleteUser, useUpdateScopes, useUsers } from "./hooks";
+import { useMe } from "@/app/auth/api/hooks";
+import { isAdmin } from "@/lib/scopes";
 
 export default function UsersPage() {
+  const { data: me, isLoading: meLoading } = useMe();
   const { data: users = [], isLoading } = useUsers();
+
+  if (!meLoading && me && !isAdmin(me.scopes)) {
+    return <Navigate to="/errors/forbidden" replace />;
+  }
   const { mutate: addUser } = useAddUser();
   const { mutate: deleteUser } = useDeleteUser();
   const { mutate: updateScopes } = useUpdateScopes();

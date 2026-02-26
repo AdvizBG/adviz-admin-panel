@@ -8,9 +8,14 @@ import { VenueImagesDialog } from "./components/venue-images-dialog";
 import { VenueUnavailabilityDialog } from "./components/venue-unavailability-dialog";
 import { useVenues, useDeleteVenue } from "./hooks";
 import type { VenueListItem } from "./types";
+import { useMe } from "@/app/auth/api/hooks";
+import { isVenueOwner } from "@/lib/scopes";
 
 export default function VenuesPage() {
-  const { data: venues = [], isLoading } = useVenues();
+  const { data: me } = useMe();
+  const ownerOnly = me ? isVenueOwner(me.scopes) : false;
+  const venueParams = ownerOnly && me ? { owner_id: String(me.id) } : undefined;
+  const { data: venues = [], isLoading } = useVenues(venueParams);
   const { mutate: deleteVenue } = useDeleteVenue();
 
   // Dialog states for direct access from page

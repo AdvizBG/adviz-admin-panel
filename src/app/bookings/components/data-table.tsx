@@ -89,9 +89,10 @@ function fmt(dt: string) {
 interface DataTableProps {
   bookings: Booking[];
   loading: boolean;
+  isAdmin: boolean;
 }
 
-export function DataTable({ bookings, loading }: DataTableProps) {
+export function DataTable({ bookings, loading, isAdmin }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -263,15 +264,19 @@ export function DataTable({ bookings, loading }: DataTableProps) {
                     Промени статус
                   </DropdownMenuItem>
                 )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  variant="destructive"
-                  className="cursor-pointer"
-                  onClick={() => deleteBooking(booking.id)}
-                >
-                  <Trash2 className="mr-2 size-4" />
-                  Изтрий
-                </DropdownMenuItem>
+                {isAdmin && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      variant="destructive"
+                      className="cursor-pointer"
+                      onClick={() => deleteBooking(booking.id)}
+                    >
+                      <Trash2 className="mr-2 size-4" />
+                      Изтрий
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
