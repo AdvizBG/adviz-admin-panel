@@ -21,6 +21,7 @@ import {
   Download,
   Search,
   Loader2,
+  UserCheck,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -58,6 +59,7 @@ import { Eye, Pencil } from "lucide-react";
 import { UserDetailsDialog } from "./user-details-dialog";
 import { UserEditDialog } from "./user-edit-dialog";
 import { ScopeEditorDialog } from "./scope-edit-dialog";
+import { OWNER_SCOPES, useUpdateScopes } from "../hooks";
 
 interface DataTableProps {
   users: User[];
@@ -82,6 +84,8 @@ export function DataTable({
   onAddUser,
   onUpdateScopes,
 }: DataTableProps) {
+  const { mutate: escalateScopes } = useUpdateScopes();
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -263,6 +267,21 @@ export function DataTable({
                 >
                   <ShieldCheck className="mr-2 size-4" />
                   Управление на права
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => {
+                    const current = Array.isArray(user.scopes)
+                      ? (user.scopes as string[])
+                      : [];
+                    const merged = Array.from(
+                      new Set([...current, ...OWNER_SCOPES]),
+                    );
+                    escalateScopes({ id: user.id, scopes: merged });
+                  }}
+                >
+                  <UserCheck className="mr-2 size-4" />
+                  Ескалирай до собственик
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

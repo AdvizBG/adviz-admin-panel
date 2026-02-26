@@ -3,6 +3,21 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { User, UserFormValues, UserUpdate } from "./types";
 import { api } from "@/lib/api";
 
+export const OWNER_SCOPES = [
+  "users:me",
+  "venues:read",
+  "venues:me",
+  "venues:write",
+  "venues:delete",
+  "venues:images",
+  "venues:schedule",
+  "bookings:read",
+  "bookings:write",
+  "bookings:cancel",
+  "bookings:manage",
+  "payments:read",
+];
+
 export function useUsers() {
   return useQuery({ queryKey: ["users"], queryFn: fetchUsers });
 }
