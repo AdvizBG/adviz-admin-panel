@@ -47,23 +47,23 @@ export function useAddVenue() {
     mutationFn: (data: VenueFormValues) =>
       api.post<Venue>("/venues/", data).then((r) => r.data),
     onSuccess: (newVenue) => {
-      qc.setQueryData<VenueListItem[]>(VENUES_KEY, (prev = []) => [
-        {
-          id: newVenue.id,
-          name: newVenue.name,
-          city: newVenue.city,
-          sport_types: newVenue.sport_types,
-          status: newVenue.status,
-          price_per_hour: newVenue.price_per_hour,
-          currency: newVenue.currency,
-          capacity: newVenue.capacity,
-          is_indoor: newVenue.is_indoor,
-          rating: newVenue.rating,
-          total_reviews: newVenue.total_reviews,
-          thumbnail: newVenue.images.find((i) => i.is_thumbnail)?.url ?? null,
-        },
-        ...prev,
-      ]);
+      const item: VenueListItem = {
+        id: newVenue.id,
+        name: newVenue.name,
+        city: newVenue.city,
+        sport_types: newVenue.sport_types,
+        status: newVenue.status,
+        price_per_hour: newVenue.price_per_hour,
+        currency: newVenue.currency,
+        capacity: newVenue.capacity,
+        is_indoor: newVenue.is_indoor,
+        rating: newVenue.rating,
+        total_reviews: newVenue.total_reviews,
+        thumbnail: newVenue.images.find((i) => i.is_thumbnail)?.url ?? null,
+      };
+      qc.setQueriesData<VenueListItem[]>({ queryKey: VENUES_KEY }, (prev) =>
+        Array.isArray(prev) ? [item, ...prev] : prev,
+      );
     },
   });
 }
@@ -73,8 +73,8 @@ export function useDeleteVenue() {
   return useMutation({
     mutationFn: (id: string) => api.delete(`/venues/${id}`),
     onSuccess: (_, id) => {
-      qc.setQueryData<VenueListItem[]>(VENUES_KEY, (prev = []) =>
-        prev.filter((v) => v.id !== id),
+      qc.setQueriesData<VenueListItem[]>({ queryKey: VENUES_KEY }, (prev) =>
+        Array.isArray(prev) ? prev.filter((v) => v.id !== id) : prev,
       );
     },
   });
@@ -86,22 +86,24 @@ export function useUpdateVenue() {
     mutationFn: ({ id, data }: { id: string; data: VenueUpdate }) =>
       api.patch<Venue>(`/venues/${id}`, data).then((r) => r.data),
     onSuccess: (updatedVenue) => {
-      qc.setQueryData<VenueListItem[]>(VENUES_KEY, (prev = []) =>
-        prev.map((v) =>
-          v.id === updatedVenue.id
-            ? {
-                ...v,
-                name: updatedVenue.name,
-                city: updatedVenue.city,
-                sport_types: updatedVenue.sport_types,
-                status: updatedVenue.status,
-                price_per_hour: updatedVenue.price_per_hour,
-                currency: updatedVenue.currency,
-                capacity: updatedVenue.capacity,
-                is_indoor: updatedVenue.is_indoor,
-              }
-            : v,
-        ),
+      qc.setQueriesData<VenueListItem[]>({ queryKey: VENUES_KEY }, (prev) =>
+        Array.isArray(prev)
+          ? prev.map((v) =>
+              v.id === updatedVenue.id
+                ? {
+                    ...v,
+                    name: updatedVenue.name,
+                    city: updatedVenue.city,
+                    sport_types: updatedVenue.sport_types,
+                    status: updatedVenue.status,
+                    price_per_hour: updatedVenue.price_per_hour,
+                    currency: updatedVenue.currency,
+                    capacity: updatedVenue.capacity,
+                    is_indoor: updatedVenue.is_indoor,
+                  }
+                : v,
+            )
+          : prev,
       );
       qc.invalidateQueries({ queryKey: [...VENUES_KEY, updatedVenue.id] });
     },
@@ -116,8 +118,10 @@ export function useUpdateVenueStatus() {
         .patch<VenueStatusUpdate>(`/venues/${id}/status`, { status })
         .then((r) => r.data),
     onSuccess: (_, { id, status }) => {
-      qc.setQueryData<VenueListItem[]>(VENUES_KEY, (prev = []) =>
-        prev.map((v) => (v.id === id ? { ...v, status } : v)),
+      qc.setQueriesData<VenueListItem[]>({ queryKey: VENUES_KEY }, (prev) =>
+        Array.isArray(prev)
+          ? prev.map((v) => (v.id === id ? { ...v, status } : v))
+          : prev,
       );
     },
   });

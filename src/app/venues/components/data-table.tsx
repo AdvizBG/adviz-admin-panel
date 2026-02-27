@@ -34,6 +34,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -71,6 +76,7 @@ interface DataTableProps {
   venues: VenueListItem[];
   loading: boolean;
   onDeleteVenue: (id: string) => void;
+  isAdmin: boolean;
 }
 
 const statusColors: Record<VenueStatus, string> = {
@@ -87,6 +93,15 @@ const statusLabels: Record<VenueStatus, string> = {
   inactive: "Неактивен",
   maintenance: "Профилактика",
   pending_approval: "Чака одобрение",
+};
+
+const statusTooltips: Record<VenueStatus, string> = {
+  active: "Обектът е публикуван и приема резервации.",
+  inactive: "Обектът е деактивиран и не се показва на клиентите.",
+  maintenance:
+    "Обектът е временно затворен за профилактика. Не приема нови резервации.",
+  pending_approval:
+    "Обектът чака одобрение от администратор, преди да бъде публикуван и достъпен за резервации.",
 };
 
 const sportTypeLabels: Record<string, string> = {
@@ -111,7 +126,12 @@ const sportTypeIcons: Record<string, string> = {
   other: "🏃",
 };
 
-export function DataTable({ venues, loading, onDeleteVenue }: DataTableProps) {
+export function DataTable({
+  venues,
+  loading,
+  onDeleteVenue,
+  isAdmin,
+}: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -189,12 +209,19 @@ export function DataTable({ venues, loading, onDeleteVenue }: DataTableProps) {
       cell: ({ row }) => {
         const status = row.getValue("status") as VenueStatus;
         return (
-          <Badge
-            variant="secondary"
-            className={`capitalize ${statusColors[status]}`}
-          >
-            {statusLabels[status]}
-          </Badge>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Badge
+                variant="secondary"
+                className={`capitalize cursor-help ${statusColors[status]}`}
+              >
+                {statusLabels[status]}
+              </Badge>
+            </TooltipTrigger>
+            <TooltipContent side="top" className="max-w-56">
+              {statusTooltips[status]}
+            </TooltipContent>
+          </Tooltip>
         );
       },
       filterFn: (row, columnId, value) => {
@@ -313,16 +340,18 @@ export function DataTable({ venues, loading, onDeleteVenue }: DataTableProps) {
               <CalendarX className="size-4" />
               <span className="sr-only">Управление на заетост</span>
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 cursor-pointer"
-              title="Промяна на статус"
-              onClick={() => setStatusVenue(venue)}
-            >
-              <Activity className="size-4" />
-              <span className="sr-only">Промяна на статус</span>
-            </Button>
+            {isAdmin && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 cursor-pointer"
+                title="Промяна на статус"
+                onClick={() => setStatusVenue(venue)}
+              >
+                <Activity className="size-4" />
+                <span className="sr-only">Промяна на статус</span>
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="icon"
@@ -367,13 +396,15 @@ export function DataTable({ venues, loading, onDeleteVenue }: DataTableProps) {
                   <CalendarX className="mr-2 size-4" />
                   Управление на заетост
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => setStatusVenue(venue)}
-                >
-                  <Activity className="mr-2 size-4" />
-                  Промяна на статус
-                </DropdownMenuItem>
+                {isAdmin && (
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => setStatusVenue(venue)}
+                  >
+                    <Activity className="mr-2 size-4" />
+                    Промяна на статус
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem
                   className="cursor-pointer"
                   onClick={() => setEditVenue(venue)}

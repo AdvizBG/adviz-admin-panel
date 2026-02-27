@@ -93,7 +93,18 @@ Two roles access the admin panel: **admins** (full access) and **venue owners** 
 
 Role detection uses `src/lib/scopes.ts` — helpers that inspect the current user's `scopes` array (loaded from `GET /users/@me/get`). The sidebar conditionally hides the Users nav item for venue owners.
 
+```ts
+isAdmin(scopes: string[])       // true if any scope starts with "admin:"
+isVenueOwner(scopes: string[])  // true if has "venues:me" and is NOT admin
+```
+
 Venue owners cannot change venue status (button hidden). Admins can escalate any user to venue owner via the Users page scope management UI.
+
+## Adding a shadcn/ui component
+
+```bash
+bunx shadcn@latest add <component>
+```
 
 ## Adding a new page
 

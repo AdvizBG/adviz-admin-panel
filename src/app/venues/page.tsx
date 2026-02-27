@@ -15,6 +15,7 @@ export default function VenuesPage() {
   const { data: me } = useMe();
   const ownerOnly = me ? isVenueOwner(me.scopes) : false;
   const venueParams = ownerOnly && me ? { owner_id: String(me.id) } : undefined;
+  console.log(venueParams);
   const { data: venues = [], isLoading } = useVenues(venueParams);
   const { mutate: deleteVenue } = useDeleteVenue();
 
@@ -37,6 +38,7 @@ export default function VenuesPage() {
             venues={venues}
             loading={isLoading}
             onDeleteVenue={deleteVenue}
+            isAdmin={!ownerOnly}
           />
         </div>
       </div>
