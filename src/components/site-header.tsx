@@ -36,20 +36,6 @@ export function SiteHeader() {
             <SearchTrigger onClick={() => setSearchOpen(true)} />
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <Button
-              variant="ghost"
-              asChild
-              size="sm"
-              className="hidden sm:flex"
-            >
-              <a
-                href={getAppUrl("/auth/sign-in")}
-                rel="noopener noreferrer"
-                className="dark:text-foreground"
-              >
-                Log in
-              </a>
-            </Button>
             <ModeToggle />
           </div>
         </div>
