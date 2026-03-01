@@ -16,7 +16,8 @@ api.interceptors.response.use(
       localStorage.removeItem("access_token");
       const basename = import.meta.env.VITE_BASENAME || "";
       if (!window.location.pathname.startsWith(basename + "/auth/")) {
-        window.location.href = basename + "/auth/sign-in";
+        window.location.href =
+          "/bg/auth/login?redirect=" + encodeURIComponent(basename + "/");
       }
     }
     return Promise.reject(error);

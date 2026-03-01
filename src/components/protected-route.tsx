@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useMe } from "@/app/auth/api/hooks";
 
 interface ProtectedRouteProps {
@@ -11,7 +11,10 @@ export function ProtectedRoute({ requiredScopes = [] }: ProtectedRouteProps) {
   if (isLoading) return <div>Loading...</div>; // or a spinner
 
   if (isError || !user) {
-    return <Navigate to="/auth/sign-in" replace />;
+    const basename = import.meta.env.VITE_BASENAME || "";
+    window.location.href =
+      "/bg/auth/login?redirect=" + encodeURIComponent(basename + "/");
+    return null;
   }
 
   const hasScopes = requiredScopes.every((scope) =>
@@ -19,7 +22,7 @@ export function ProtectedRoute({ requiredScopes = [] }: ProtectedRouteProps) {
   );
 
   if (!hasScopes) {
-    return <Navigate to="/errors/forbidden" replace />;
+    return <Outlet />; // let the sidebar handle visibility
   }
 
   return <Outlet />;

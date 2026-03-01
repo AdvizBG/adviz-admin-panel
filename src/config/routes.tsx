@@ -6,9 +6,6 @@ const Users = lazy(() => import("@/app/users/page"));
 const Venues = lazy(() => import("@/app/venues/page"));
 const Bookings = lazy(() => import("@/app/bookings/page"));
 
-const SignIn = lazy(() => import("@/app/auth/sign-in/page"));
-const ForgotPassword = lazy(() => import("@/app/auth/forgot-password/page"));
-
 const Unauthorized = lazy(() => import("@/app/errors/unauthorized/page"));
 const Forbidden = lazy(() => import("@/app/errors/forbidden/page"));
 const NotFound = lazy(() => import("@/app/errors/not-found/page"));
@@ -37,8 +34,6 @@ export const routes: RouteConfig[] = [
   { path: "/users", element: <Users /> },
   { path: "/venues", element: <Venues /> },
   { path: "/bookings", element: <Bookings /> },
-  { path: "/auth/sign-in", element: <SignIn />, isPublic: true },
-  { path: "/auth/forgot-password", element: <ForgotPassword />, isPublic: true },
   { path: "/errors/unauthorized", element: <Unauthorized /> },
   { path: "/errors/forbidden", element: <Forbidden /> },
   { path: "/errors/not-found", element: <NotFound /> },

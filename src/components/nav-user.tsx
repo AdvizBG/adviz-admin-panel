@@ -40,7 +40,7 @@ export function NavUser() {
 
   const handleLogout = () => {
     logout();
-    navigate("/auth/sign-in");
+    window.location.href = "/bg/auth/login";
   };
 
   if (isLoading)
