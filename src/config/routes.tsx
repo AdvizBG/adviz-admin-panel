@@ -3,8 +3,8 @@ import { Navigate } from "react-router-dom";
 
 const Dashboard = lazy(() => import("@/app/dashboard/page"));
 const Users = lazy(() => import("@/app/users/page"));
-const Venues = lazy(() => import("@/app/venues/page"));
-const Bookings = lazy(() => import("@/app/bookings/page"));
+// const Venues = lazy(() => import("@/app/venues/page"));
+// const Bookings = lazy(() => import("@/app/bookings/page"));
 
 const Unauthorized = lazy(() => import("@/app/errors/unauthorized/page"));
 const Forbidden = lazy(() => import("@/app/errors/forbidden/page"));
@@ -32,8 +32,8 @@ export const routes: RouteConfig[] = [
   { path: "/", element: <Navigate to="dashboard" replace /> },
   { path: "/dashboard", element: <Dashboard /> },
   { path: "/users", element: <Users /> },
-  { path: "/venues", element: <Venues /> },
-  { path: "/bookings", element: <Bookings /> },
+  // { path: "/venues", element: <Venues /> },
+  // { path: "/bookings", element: <Bookings /> },
   { path: "/errors/unauthorized", element: <Unauthorized /> },
   { path: "/errors/forbidden", element: <Forbidden /> },
   { path: "/errors/not-found", element: <NotFound /> },
